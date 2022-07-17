@@ -37,7 +37,8 @@
                 xhr.addEventListener('load', function(){
                     // console.log(xhr.responseText); // 응답이 왔을때 responseText를 확인할려고 console.log 로 찍어보기
                     const result = JSON.parse(xhr.responseText) // 응답값을 JSON.parse로 뽑아낸다.
-                    document.querySelector('.result').innerHTML = result.email; // result라는 클래스를 가진 html태그안에 result.email을 넣어준다.
+                    if(!result.name) return; // result.name 이 없다면 아무것도 하지않기!
+                    document.querySelector('.result').innerHTML = result.name; // result라는 클래스를 가진 html태그안에 result.email을 넣어준다.
                 });
             }
             // 중요!!! ajax 통신은 network 패널에 찍히지 않는다 콘솔을 활용하자!
