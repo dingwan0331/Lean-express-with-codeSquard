@@ -2,6 +2,17 @@ const express = require('express')  // require = node_module에 있는 함수를
 const app = express()    // express는 함수를 가르키지만 실행은 하지않는다 app에 express뒤에 () 붙인 실행형을 할당
 const port = 3000 // 포트넘number를 변수에 담았다.
 const bodyParser = require('body-parser') // node_modules의 body-parser를 가져온다
+const mysql = require('mysql') // mysql 불러오기
+const { response } = require('express')
+const connection = mysql.createConnection({ // mysql 과 연동할 기본 셋팅들을 인자로 넣어준다.
+  host     : 'localhost',       // mysql end-point 지금은 local 환경의 mysql을 사용하기에 localhost로 적었다.
+  port     : '3306',            // mysql default port number
+  user     : 'root',            // mysql 의 유네임을 넣어준다.
+  password : '',                // mysql 의 pw를 넣어줘야하지만 외부 모듈 + gitignore 관리를 배우기전까지 공백으로 유지할 예정이다.
+  database : 'express_example'  // 사용할 schema를 입력
+});
+
+connection.connect() // db 연결!
 
 // GET 메서드를 통해 들어온 요청 req, res는 request & response
 // res.send 메세지를 response로 날린다!
@@ -49,10 +60,36 @@ app.post('/email_post', function(req, res){
   res.render('email.ejs',{'email' : req.body.email})
 })
 
-// ejs 내에서 주석 처리할때 html 문법이 아닌 ejs 문법에 기반하여 하여야 한다.. 아니면 오류가 난다...
-app.post('/ajax-send-email', function(req, res){
-  console.log(req.body.email) // 콘솔에 req의 body에 있는 email 찍어보기
-  // response로 보낼 object형식의 데이터를 변수에 담기
-  const responseData = {'result' : 'Success', 'email' : req.body.email}
-  res.json(responseData)  // object 형식의 데이터를 json으로 변환
+app.post('/ajax-send-email',function(req, res){
+  const email = req.body.email;
+  let responseData = {};
+  //const query = connection.query('select * from users',
+  const query = connection.query(`select name from users where email = "${email}"`,
+  function(err, rows){
+    // err가 발생하지 않으면 err = None
+    // err가 발생하지 않으면 rows = []
+    try{
+      if (err) throw err; // throw = 예외 발생시키기 raise 와같다
+      // rows 의 리턴값은 [ RowDataPacket { name: '정진관' } ] 0번 인덱스에 접근 해줘야 한다.
+      if (rows[0].name) {
+        responseData.message = 'Success';
+        responseData.name    = rows[0].name;
+      } else {
+        responseData.message = 'There Are No Matched'
+      }
+    }
+    catch(err) {   // 예외처리! message에 SQL Syntax Error 반환
+      responseData.message = 'SQL Syntax Error'
+    }
+    res.json(responseData)
+  })
 })
+
+// step1 예제 
+// ejs 내에서 주석 처리할때 html 문법이 아닌 ejs 문법에 기반하여 하여야 한다.. 아니면 오류가 난다...
+// app.post('/ajax-send-email', function(req, res){
+  // console.log(req.body.email) // 콘솔에 req의 body에 있는 email 찍어보기
+//  response로 보낼 object형식의 데이터를 변수에 담기
+  // const responseData = {'result' : 'Success', 'email' : req.body.email}
+  // res.json(responseData)  // object 형식의 데이터를 json으로 변환
+// })
