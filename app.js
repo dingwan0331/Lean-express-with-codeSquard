@@ -2,6 +2,16 @@ const express = require('express')  // require = node_module에 있는 함수를
 const app = express()    // express는 함수를 가르키지만 실행은 하지않는다 app에 express뒤에 () 붙인 실행형을 할당
 const port = 3000 // 포트넘number를 변수에 담았다.
 const bodyParser = require('body-parser') // node_modules의 body-parser를 가져온다
+const mysql = require('mysql') // mysql 불러오기
+const connection = mysql.createConnection({ // mysql 과 연동할 기본 셋팅들을 인자로 넣어준다.
+  host     : 'localhost',       // mysql end-point 지금은 local 환경의 mysql을 사용하기에 localhost로 적었다.
+  port     : '3306',            // mysql default port number
+  user     : 'root',            // mysql 의 유네임을 넣어준다.
+  password : '',                // mysql 의 pw를 넣어줘야하지만 외부 모듈 + gitignore 관리를 배우기전까지 공백으로 유지할 예정이다.
+  database : 'express_example'  // 사용할 schema를 입력
+});
+
+connection.connect() // db 연결!
 
 // GET 메서드를 통해 들어온 요청 req, res는 request & response
 // res.send 메세지를 response로 날린다!
