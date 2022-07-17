@@ -8,11 +8,16 @@ const connection = mysql.createConnection({ // mysql 과 연동할 기본 셋팅
   host     : 'localhost',       // mysql end-point 지금은 local 환경의 mysql을 사용하기에 localhost로 적었다.
   port     : '3306',            // mysql default port number
   user     : 'root',            // mysql 의 유네임을 넣어준다.
-  password : '',                // mysql 의 pw를 넣어줘야하지만 외부 모듈 + gitignore 관리를 배우기전까지 공백으로 유지할 예정이다.
+  password : '45jung45!!',                // mysql 의 pw를 넣어줘야하지만 외부 모듈 + gitignore 관리를 배우기전까지 공백으로 유지할 예정이다.
   database : 'express_example'  // 사용할 schema를 입력
 });
 
 connection.connect() // db 연결!
+
+// router
+const main = require('./router/main')
+
+app.use('/main', main)
 
 // GET 메서드를 통해 들어온 요청 req, res는 request & response
 // res.send 메세지를 response로 날린다!
@@ -26,16 +31,6 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
 
-// 기본적인 url 라우터
-// sendFile() = 브라우저에 나의 파일을 보내준다.이 안에는 파일의 경로가 필요하다.
-// __dirname = express에서 지원하는 기능으로 나의 app 경로를 문자열 형태로 반환한다.
-// res.send와 res.sendFile 을 동시에 쓰면 오류가난다 예상으로는 res.send를 사용하면 자동으로 index.html or index.js를 같이 주는데 
-// sendFile의 main.html 파일과 두개가 보내져 오류를 일으키는 것 같다.
-// app.get의 첫 인자로 배열을 넣으면 여러개의 url을 한군데로 처리가 가능하다.
-app.get(['/1','/main'], function(req, res){
-   res.send('<h1>Hi!!!!!</h1>')
-  //res.sendFile(__dirname + '/public/main.html')
-})
 
 // 스태틱파일 등록하기
 // express.static('public') = public dir을 스태틱 함수에 넣어준다.
@@ -87,9 +82,26 @@ app.post('/ajax-send-email',function(req, res){
 
 // step1 예제 
 // ejs 내에서 주석 처리할때 html 문법이 아닌 ejs 문법에 기반하여 하여야 한다.. 아니면 오류가 난다...
-// app.post('/ajax-send-email', function(req, res){
-  // console.log(req.body.email) // 콘솔에 req의 body에 있는 email 찍어보기
-//  response로 보낼 object형식의 데이터를 변수에 담기
-  // const responseData = {'result' : 'Success', 'email' : req.body.email}
-  // res.json(responseData)  // object 형식의 데이터를 json으로 변환
-// })
+
+/*  app.post('/ajax-send-email', function(req, res){
+      console.log(req.body.email) // 콘솔에 req의 body에 있는 email 찍어보기
+      response로 보낼 object형식의 데이터를 변수에 담기
+      const responseData = {'result' : 'Success', 'email' : req.body.email}
+      res.json(responseData)  // object 형식의 데이터를 json으로 변환
+ }) */
+
+
+
+ /*
+// 기본적인 url 라우터
+// sendFile() = 브라우저에 나의 파일을 보내준다.이 안에는 파일의 경로가 필요하다.
+// __dirname = express에서 지원하는 기능으로 나의 app 경로를 문자열 형태로 반환한다.
+// res.send와 res.sendFile 을 동시에 쓰면 오류가난다 예상으로는 res.send를 사용하면 자동으로 index.html or index.js를 같이 주는데 
+// sendFile의 main.html 파일과 두개가 보내져 오류를 일으키는 것 같다.
+// app.get의 첫 인자로 배열을 넣으면 여러개의 url을 한군데로 처리가 가능하다.
+
+app.get(['/1','/main'], function(req, res){
+   res.send('<h1>Hi!!!!!</h1>')
+  //res.sendFile(__dirname + '/public/main.html')
+})
+*/
