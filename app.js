@@ -48,4 +48,11 @@ app.post('/email_post', function(req, res){
   // 2번째 인자는 object 타입으로 해당 키값에 대한 밸류를 설정해준다.
   res.render('email.ejs',{'email' : req.body.email})
 })
+
 // ejs 내에서 주석 처리할때 html 문법이 아닌 ejs 문법에 기반하여 하여야 한다.. 아니면 오류가 난다...
+app.post('/ajax-send-email', function(req, res){
+  console.log(req.body.email) // 콘솔에 req의 body에 있는 email 찍어보기
+  // response로 보낼 object형식의 데이터를 변수에 담기
+  const responseData = {'result' : 'Success', 'email' : req.body.email}
+  res.json(responseData)  // object 형식의 데이터를 json으로 변환
+})
