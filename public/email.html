@@ -4,12 +4,19 @@
         <meta charset="utf-8">
         <title>email form</title>
     </head>
+    <body>
+        <form action="/email_post" method="post">
+            <!-- input 태그의 name 은 객체의 키값이 된다!-->
+            email : <input type="text" name="email" >
+            <br>
+            <input type="submit">
+        </form>
+        <button class = 'ajaxsend'>ajaxsend</button>
+        <script>
+            document.querySelector('.ajaxsend').addEventListener('click', function()){
+                let inputdata|
+                sendAjax('http://127.0.0.1/ajax_send_email')
+            }
+        </script>
+    </body>
 </html>
-<body>
-    <form action="/email_post" method="post">
-        <!-- input 태그의 name 은 객체의 키값이 된다!-->>
-        email : <input type="text" name="email" >
-        <br>
-        <input type="submit">
-    </form>
-</body>

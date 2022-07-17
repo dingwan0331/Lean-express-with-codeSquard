@@ -22,8 +22,8 @@ app.listen(port, () => {
 // sendFile의 main.html 파일과 두개가 보내져 오류를 일으키는 것 같다.
 // app.get의 첫 인자로 배열을 넣으면 여러개의 url을 한군데로 처리가 가능하다.
 app.get(['/1','/main'], function(req, res){
-  // res.send('<h1>Hi!!!!!</h1>')
-  res.sendFile(__dirname + '/public/main.html')
+   res.send('<h1>Hi!!!!!</h1>')
+  //res.sendFile(__dirname + '/public/main.html')
 })
 
 // 스태틱파일 등록하기
@@ -33,13 +33,19 @@ app.use(express.static('public'))
 app.use(bodyParser.json())
 // bodyParser를 express에서 사용할꺼다! json 말고 다른형태인데.. 인코딩도 해줘...
 app.use(bodyParser.urlencoded({extended:true}))
+// 내 view engine은 ejs라는 셋팅을 해준다 use vs set
+app.set('view engine', 'ejs')
 
 app.get('/email', function(req, res){
-  res.sendFile(__dirname + '/public/form.html')
+  res.sendFile(__dirname + '/public/email.html')
 })
 
 // post 에서 body값을 뽑아 내려면 body-parser를 설치해야한다!
 app.post('/email_post', function(req, res){
   // 리퀘스트의 바디의 email키값을 가진 value를 보내준다
-  res.send(req.body.email)
+  //res.send(req.body.email)
+  // render를 사용하여 email.ejs 에서 ejs문법에 해당하는 키에 대한 밸류를 설정해준다.
+  // 2번째 인자는 object 타입으로 해당 키값에 대한 밸류를 설정해준다.
+  res.render('email.ejs',{'email' : req.body.email})
 })
+// ejs 내에서 주석 처리할때 html 문법이 아닌 ejs 문법에 기반하여 하여야 한다.. 아니면 오류가 난다...
