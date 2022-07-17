@@ -1,1 +1,1 @@
-console.log('node 재밌는데 어렵다...')
+console.log('흐어어엉 슬퍼 ㅠㅠ')
