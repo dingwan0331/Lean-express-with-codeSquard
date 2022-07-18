@@ -1,7 +1,7 @@
-const express    = require('express');
-const router     = express.Router(); // express의 Router 메서드
-const path       = require('path');  // 상대경로를 사용하기위해 path 모듈 불러오기
-const mysql      = require('mysql')
+const express = require('express');
+const router  = express.Router(); // express의 Router 메서드
+const path    = require('path');  // 상대경로를 사용하기위해 path 모듈 불러오기
+const mysql   = require('mysql')
 
 const connection = mysql.createConnection({ // mysql 과 연동할 기본 셋팅들을 인자로 넣어준다.
     host     : 'localhost',       // mysql end-point 지금은 local 환경의 mysql을 사용하기에 localhost로 적었다.

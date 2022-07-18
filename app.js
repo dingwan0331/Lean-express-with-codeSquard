@@ -1,31 +1,9 @@
-const express      = require('express')  // require = node_module에 있는 함수를 불러오는 함수
-const app          = express()    // express는 함수를 가르키지만 실행은 하지않는다 app에 express뒤에 () 붙인 실행형을 할당
-const port         = 3000 // 포트넘number를 변수에 담았다.
-const bodyParser   = require('body-parser') // node_modules의 body-parser를 가져온다
-const mysql        = require('mysql') // mysql 불러오기
-// const { response } = require('express')  // ??? 넌 누구니?
-const connection = mysql.createConnection({ // mysql 과 연동할 기본 셋팅들을 인자로 넣어준다.
-  host     : 'localhost',       // mysql end-point 지금은 local 환경의 mysql을 사용하기에 localhost로 적었다.
-  port     : '3306',            // mysql default port number
-  user     : 'root',            // mysql 의 유네임을 넣어준다.
-  password : '',                // mysql 의 pw를 넣어줘야하지만 외부 모듈 + gitignore 관리를 배우기전까지 공백으로 유지할 예정이다.
-  database : 'express_example'  // 사용할 schema를 입력
-});
- 
-connection.connect() // db 연결!
-
-// GET 메서드를 통해 들어온 요청 req, res는 request & response
-// res.send 메세지를 response로 날린다!
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-// listen = 3000이란 포트로 요청을 받는다 == 서버를 실행한다.
-// 안에 있는 콘솔로그는 서버 구동 콘솔에 뜬다.
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
-
+const express    = require('express')       // require = node_module에 있는 함수를 불러오는 함수
+const app        = express()                // express는 함수를 가르키지만 실행은 하지않는다 app에 express뒤에 () 붙인 실행형을 할당
+const port       = 3000                     // 포트넘number를 변수에 담았다.
+const bodyParser = require('body-parser')   // node_modules의 body-parser를 가져온다
+// const mysql      = require('mysql')         // mysql 불러오기
+const router     = require('./router/index.js')
 
 // 스태틱파일 등록하기
 // express.static('public') = public dir을 스태틱 함수에 넣어준다.
@@ -37,20 +15,28 @@ app.use(bodyParser.urlencoded({extended:true}))
 // 내 view engine은 ejs라는 셋팅을 해준다 use vs set
 app.set('view engine', 'ejs')
 
+app.use(router)
+
+// listen = 3000이란 포트로 요청을 받는다 == 서버를 실행한다.
+// 안에 있는 콘솔로그는 서버 구동 콘솔에 뜬다.
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
 /*
    바디파써가!!!!! 라우터보다!!! 밑에있으면!!!! 작동을 안한다!!!!
 */
 
-// router
-const main  = require('./router/main')
-const email = require('./router/email')
-
-app.use('/main', main)
-app.use('/email', email)
-
-
 // step1 예제 
 // ejs 내에서 주석 처리할때 html 문법이 아닌 ejs 문법에 기반하여 하여야 한다.. 아니면 오류가 난다...
+
+/*
+// GET 메서드를 통해 들어온 요청 req, res는 request & response
+// res.send 메세지를 response로 날린다!
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+*/
 
 /*  app.post('/ajax-send-email', function(req, res){
       console.log(req.body.email) // 콘솔에 req의 body에 있는 email 찍어보기
@@ -118,3 +104,18 @@ app.post('/ajax-send-email',function(req, res){
   })
 })
 */
+
+// db 연결부
+
+/*
+const connection = mysql.createConnection({ // mysql 과 연동할 기본 셋팅들을 인자로 넣어준다.
+  host     : 'localhost',                   // mysql end-point 지금은 local 환경의 mysql을 사용하기에 localhost로 적었다.
+  port     : '3306',                        // mysql default port number
+  user     : 'root',                        // mysql 의 유네임을 넣어준다.
+  password : '',                            // mysql 의 pw를 넣어줘야하지만 외부 모듈 + gitignore 관리를 배우기전까지 공백으로 유지할 예정이다.
+  database : 'express_example'              // 사용할 schema를 입력
+});
+ 
+connection.connect() // db 연결!
+*/
+
