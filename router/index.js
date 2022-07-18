@@ -9,8 +9,8 @@ const router     = express.Router()
 const main  = require('./main')
 const email = require('./email')
 
-app.use('/main', main)
-app.use('/email', email)
+router.use('/main', main)
+router.use('/email', email)
 
 router.get('', function(req, res){
     res.sendFile(path.join(__dirname, '../public/main.html'))
