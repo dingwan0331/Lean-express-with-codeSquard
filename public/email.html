@@ -5,7 +5,7 @@
         <title>email form</title>
     </head>
     <body>
-        <form action="/email_post" method="post">
+        <form action="/email/send" method="post">
             <!-- input 태그의 name 은 객체의 키값이 된다!-->
             email : <input type="text" name="email" >
             <br>
@@ -24,10 +24,10 @@
             document.querySelector('.ajaxsend').addEventListener('click', 
                 function() {
                     let inputdata = document.forms[0].elements[0].value;
-                    sendAjax('/ajax-send-email', inputdata);
+                    sendAjax('/email/ajax', inputdata);
             })
             function sendAjax(url, inputdata) {
-                let data = {'email' : inputdata};  // 인자로 받은 data를 object 타입으로 만들어준다.
+                let data = {email : inputdata};  // 인자로 받은 data를 object 타입으로 만들어준다.
                 data = JSON.stringify(data);        // object의 데이터를 다시꺼내서 json의 str type 으로 encoding 한다. (강의상 실수같음...)
                 
                 let xhr = new XMLHttpRequest();    // xhr 변수에 XHLHttpRequest를 담아준다.
